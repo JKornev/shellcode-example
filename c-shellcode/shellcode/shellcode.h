@@ -15,7 +15,7 @@
 #define GET_PEB __readgsqword(0x60)
 #define PIMAGE_OPT_HEADER PIMAGE_OPTIONAL_HEADER64
 #else
-#error Architechure not supported!
+#error Architecture not supported!
 #endif
 
 typedef struct _UNICODE_STRING {
