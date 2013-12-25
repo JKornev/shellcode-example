@@ -158,7 +158,8 @@ uintptr_t load_shellcode(char *path)
 	((void (*)())pspace)();//call shellcode
 
 	VirtualFree(pspace, size, MEM_DECOMMIT);
-
+	free(pbuf);
+	
 	return 1;
 }
 
