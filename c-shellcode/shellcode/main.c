@@ -40,7 +40,7 @@ uintptr_t unpack_shellcode(char *exe_path, char *save_path)
 		}
 
 		//parse DOS and PE header
-		pdos = (PIMAGE_DOS_HEADER)GetModuleHandle(NULL);
+		pdos = (PIMAGE_DOS_HEADER)pview;
 		if (pdos->e_magic != IMAGE_DOS_SIGNATURE) {
 			printf("Error, incorrect DOS header!\n");
 			return 0;
@@ -86,7 +86,7 @@ uintptr_t unpack_shellcode(char *exe_path, char *save_path)
 
 		//shink shellcode size
 		size = 0;
-		pshell_buf = (char *)((uintptr_t)pdos + psect->VirtualAddress);
+		pshell_buf = (char *)((uintptr_t)pdos + psect->PointerToRawData);
 		for (i = psect->SizeOfRawData - 1; i >= 0; i--) {
 			if (pshell_buf[i] != 0 && pshell_buf[i] != 0xCC) {
 				size = i + 1;
@@ -156,6 +156,8 @@ uintptr_t load_shellcode(char *path)
 	memcpy(pspace, pbuf, size);
 
 	((void (*)())pspace)();//call shellcode
+
+	VirtualFree(pspace, size, MEM_DECOMMIT);
 
 	return 1;
 }
