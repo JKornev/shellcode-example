@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
 
 	((void (*)())pspace)();//call shellcode
 
-	VirtualFree(pspace, size, MEM_DECOMMIT);
+	VirtualFree(pspace, 0, MEM_RELEASE);
 	free(pbuf);
 	return 0;
 }
